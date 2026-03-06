@@ -1,0 +1,35 @@
+name: CI/CD Pipeline
+on: 
+  push:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Run unit tests
+        run: |
+          echo "Running unit tests..."
+          sleep 2
+          # Simulate occasional test failure
+          if [ $((RANDOM % 3)) -eq 0 ]; then
+            echo "❌ Tests failed!"
+            exit 1
+          fi
+          echo "✅ Tests passed!"
+  
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Build application
+        run: |
+          echo "Building application..."
+          sleep 3
+          echo "✅ Build successful!"
